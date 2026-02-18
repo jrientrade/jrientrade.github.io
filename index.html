@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Quote</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: linear-gradient(to bottom, #f0f8ff, #e6e6fa); }
+        #quote { font-size: 24px; margin: 20px; padding: 20px; border-left: 5px solid #007bff; background: white; }
+    </style>
+</head>
+<body>
+    <h1>Quote of the Day</h1>
+    <div id="quote">Loading...</div>
+
+    <script>
+        // Your pre-written quotes array (add 365+ here)
+        const quotes = [
+            "The only way to do great work is to love what you do. – Steve Jobs",
+            "Innovation distinguishes between a leader and a follower. – Steve Jobs",
+            // Add more quotes...
+        ];
+
+        // Daily random seed (same quote every day)
+        const today = new Date().toDateString();
+        let seed = 0;
+        for (let i = 0; i < today.length; i++) {
+            seed += today.charCodeAt(i) * 31;
+        }
+        Math.seedrandom(seed / 100000);  // Use a simple seedrandom lib or inline hash
+
+        // Pick and display
+        const dailyQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quote').textContent = dailyQuote;
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>  <!-- Free CDN for seeding -->
+</body>
+</html>
