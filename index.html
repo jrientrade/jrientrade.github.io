@@ -2,36 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Quote</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: linear-gradient(to bottom, #f0f8ff, #e6e6fa); }
-        #quote { font-size: 24px; margin: 20px; padding: 20px; border-left: 5px solid #007bff; background: white; }
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background: linear-gradient(to bottom, #f0f8ff, #e6e6fa);
+            margin: 0;
+        }
+        h1 { color: #333; }
+        #quote { 
+            font-size: 24px; 
+            margin: 20px; 
+            padding: 30px; 
+            border-left: 5px solid #007bff; 
+            background: white; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
     </style>
 </head>
 <body>
     <h1>Quote of the Day</h1>
-    <div id="quote">Loading...</div>
+    <div id="quote">Loading quote...</div>
 
     <script>
-        // Your pre-written quotes array (add 365+ here)
+        // Your pre-written quotes (add more here)
         const quotes = [
             "The only way to do great work is to love what you do. – Steve Jobs",
             "Innovation distinguishes between a leader and a follower. – Steve Jobs",
-            // Add more quotes...
+            "Stay hungry, stay foolish. – Steve Jobs",
+            "The future belongs to those who believe in the beauty of their dreams. – Eleanor Roosevelt"
         ];
 
-        // Daily random seed (same quote every day)
-        const today = new Date().toDateString();
-        let seed = 0;
-        for (let i = 0; i < today.length; i++) {
-            seed += today.charCodeAt(i) * 31;
+        // Pure JS date-based hash (no external library needed)
+        function hashDate(dateStr) {
+            let hash = 0;
+            for (let i = 0; i < dateStr.length; i++) {
+                const char = dateStr.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return Math.abs(hash);
         }
-        Math.seedrandom(seed / 100000);  // Use a simple seedrandom lib or inline hash
 
-        // Pick and display
-        const dailyQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        document.getElementById('quote').textContent = dailyQuote;
+        // Generate consistent daily random index
+        const today = new Date().toDateString();
+        const seed = hashDate(today);
+        const dailyIndex = (seed % quotes.length);
+        
+        // Display the quote
+        document.getElementById('quote').textContent = quotes[dailyIndex];
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>  <!-- Free CDN for seeding -->
 </body>
 </html>
